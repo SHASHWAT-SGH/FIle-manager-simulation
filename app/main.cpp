@@ -4,6 +4,6 @@ using namespace std;
 
 int main()
 {
-    cout << "hello world";
+    system("dir");
     return 0;
 }
