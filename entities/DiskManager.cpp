@@ -1,30 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <cstdlib>
-
-using namespace std;
-
-struct MemoryBlock
-{
-    int start;
-    int size;
-    string fileName;
-};
-
-class DiskManager
-{
-public:
-    DiskManager(int diskSize);
-    bool createFile(const string fileName, int fileSize);
-    bool deleteFile(const string fileName);
-    void displayMemory();
-    void calculateFragmentation();
-
-private:
-    int diskSize;
-    vector<MemoryBlock> memoryBlocks;
-};
+#include "../headers/DiskManager.h"
 
 DiskManager::DiskManager(int diskSize)
 {
@@ -108,6 +82,7 @@ bool DiskManager::deleteFile(const string fileName)
 
 void DiskManager::displayMemory()
 {
+    // Block 5: File: File5, Size: 25 units
     cout << "Memory Blocks:" << endl;
 
     for (int i = 0; i < memoryBlocks.size(); i++)
@@ -138,16 +113,16 @@ void DiskManager::calculateFragmentation()
         if (memoryBlocks[i].fileName.empty())
         {
             totalFreeSpace += memoryBlocks[i].size;
-            if (i > 0 && memoryBlocks[i - 1].fileName.empty())
-            {
-                numWastedBlocks++;
-                totalWastedSpace += memoryBlocks[i].size;
-            }
+        }
+        if (i > 0 && memoryBlocks[i - 1].fileName.empty())
+        {
+            numWastedBlocks++;
+            totalWastedSpace += memoryBlocks[i - 1].size;
         }
     }
 
     // Print or log the fragmentation and wastage values
-    cout << "External Fragmentation: " << totalFreeSpace << " units" << endl;
+    cout << "Total Free Space: " << totalFreeSpace << " units" << endl;
     cout << "Disk Wastage: " << totalWastedSpace << " units in " << numWastedBlocks << " blocks" << endl;
 }
 
