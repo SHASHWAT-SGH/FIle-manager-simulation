@@ -63,15 +63,15 @@ int main()
             cout << "Enter file size: ";
             cin >> intInput;
             cout << endl;
-            diskManager.createFile(stringInput, intInput);
-            // if (diskManager.createFile(stringInput, intInput))
-            // {
-            //     cout << "success";
-            // }
-            // else
-            // {
-            //     cout << "failed";
-            // }
+            // diskManager.createFile(stringInput, intInput);
+            if (diskManager.createFile(stringInput, intInput))
+            {
+                cout << "success";
+            }
+            else
+            {
+                cout << "failed";
+            }
             break;
         case 3:
             // Delete file

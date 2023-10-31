@@ -10,7 +10,7 @@
     array with the first memory block
     which is empty
 */
-DiskManager::DiskManager(int diskSize)
+DiskManager::DiskManager(int diskSize) : diskSize(diskSize)
 {
     // Initialize the memory blocks
     MemoryBlock initialBlock = {0, diskSize, ""};
@@ -44,6 +44,7 @@ bool DiskManager::createDirectory(const string dirName)
 */
 bool DiskManager::createFile(const string fileName, int fileSize)
 {
+
     // create file
     if (commands.createFile(fileName, to_string(fileSize)))
     { // if file is created
