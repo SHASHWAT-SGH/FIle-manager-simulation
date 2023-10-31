@@ -113,3 +113,8 @@ void Commands::printDirStruct(const string dirName)
     string command = "tree " + currentDir + dirName + " /f";
     system(command.c_str());
 }
+
+void Commands::createRoot()
+{
+    system("mkdir root");
+}

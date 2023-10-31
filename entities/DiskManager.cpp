@@ -15,6 +15,7 @@ DiskManager::DiskManager(int diskSize)
     // Initialize the memory blocks
     MemoryBlock initialBlock = {0, diskSize, ""};
     memoryBlocks.push_back(initialBlock);
+    commands.createRoot();
 }
 
 /*

@@ -24,6 +24,7 @@ public:
     bool deleteFile(const string fileName);
     bool deleteDir(const string dirName);
     void printDirStruct(const string dirName);
+    void createRoot();
 };
 
 #endif
