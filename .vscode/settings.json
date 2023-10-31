@@ -3,6 +3,10 @@
     "*.embeddedhtml": "html",
     "ostream": "cpp",
     "iostream": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "*.tcc": "cpp",
+    "memory_resource": "cpp",
+    "type_traits": "cpp",
+    "sstream": "cpp"
   }
 }

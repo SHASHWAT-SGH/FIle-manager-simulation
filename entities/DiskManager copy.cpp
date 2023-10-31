@@ -1,15 +1,5 @@
 #include "../headers/DiskManager.h"
-#include "../headers/Commands.h"
 
-/*
-    Parameterised constructor which takes
-    disk size as input and creates a virtual
-    memory with given disk size.
-
-    It also initializes the memoryBlocks
-    array with the first memory block
-    which is empty
-*/
 DiskManager::DiskManager(int diskSize)
 {
     // Initialize the memory blocks
@@ -17,49 +7,12 @@ DiskManager::DiskManager(int diskSize)
     memoryBlocks.push_back(initialBlock);
 }
 
-/*
-    This function creates a directory
-    with the given name.
-    it returns true if creation is successfull
-    else it returns false and prints the error message.
-*/
-
-bool DiskManager::createDirectory(const string dirName)
-{
-    if (commands.createDirectory(dirName))
-    {
-        cout << "Directory successfully created." << endl;
-    }
-    else
-    {
-        cout << "Unable to create Directory!" << endl;
-    }
-}
-
-/*
-    This function creates a file
-    with the given name and given size in bytes.
-    it returns true if creation is successfull
-    else it returns false and prints the error message.
-*/
-
 bool DiskManager::createFile(const string fileName, int fileSize)
 {
-    // create file
-    if (commands.createFile(fileName, to_string(fileSize)))
-    { // if file is created
-        cout << "Successfully created file." << endl;
-    }
-    else
-    { // if file is not created
-        cout << "Unable to create file!" << endl;
-        return false;
-    }
-    // Find the best-fit block to allocate space for the file.
+    // Step 1: Find the best-fit block to allocate space for the file.
     int bestFitIndex = -1;
     int bestFitSize = diskSize + 1;
 
-    // itterate over each block to find the best fit
     for (int i = 0; i < memoryBlocks.size(); i++)
     {
         if (!memoryBlocks[i].fileName.empty())
@@ -75,13 +28,13 @@ bool DiskManager::createFile(const string fileName, int fileSize)
         }
     }
 
-    //  Check if a best-fit block was found.
+    // Step 2: Check if a best-fit block was found.
     if (bestFitIndex == -1)
     {
         return false; // No suitable block found, allocation failed
     }
 
-    // Allocate the file in the best-fit block.
+    // Step 3: Allocate the file in the best-fit block.
     int remainingSize = memoryBlocks[bestFitIndex].size - fileSize;
     memoryBlocks[bestFitIndex].fileName = fileName;
     memoryBlocks[bestFitIndex].size = fileSize;
@@ -173,47 +126,70 @@ void DiskManager::calculateFragmentation()
     cout << "Disk Wastage: " << totalWastedSpace << " units in " << numWastedBlocks << " blocks" << endl;
 }
 
-/*
-    This function is used to rename a file
-    it takes 2 arguments
-    1. the old file name
-    2. the new file name
-
-*/
-bool DiskManager::renameFile(const string oldName, const string newName)
+int main()
 {
-    return commands.moveFile(oldName, newName);
-}
+    int diskSize = 1000;         // Specify the disk size
+    int simulationDuration = 10; // Simulate for 10 time units
 
-/*
-    This function is used to change
-    the current working directory path
-*/
-bool DiskManager::changeDir(const string dirPath)
-{
-    string currDir = commands.getCurrentDir();
-    if (dirPath == ".." || dirPath == "../")
+    DiskManager diskManager(diskSize);
+
+    // Simulation loop
+    for (int timeUnit = 0; timeUnit < simulationDuration; timeUnit++)
     {
+        // Simulate file creation, deletion, etc.
+        string fileName = "File" + to_string(timeUnit);
+        int fileSize = rand() % 100 + 1; // Random file size between 1 and 100 units
+        bool created = diskManager.createFile(fileName, fileSize);
+
+        if (created)
+        {
+            cout << "Created " << fileName << " with size " << fileSize << " units." << endl;
+        }
+        else
+        {
+            cout << "Failed to create " << fileName << " with size " << fileSize << " units." << endl;
+        }
+
+        // Implement other file operations (e.g., deletion, moving) here
+
+        // Update the display
+        diskManager.displayMemory();
+
+        // Calculate and print external fragmentation, disk wastage, etc.
+        diskManager.calculateFragmentation();
     }
-    return false;
-}
 
-/*
-    it lists all the contents of the dirPath
-    in a tree like structure
-    if no name is provided, it shows the contents of current path
-*/
-void DiskManager::showDirContent(const string dirPath)
-{
-    commands.printDirStruct(dirPath);
-}
+    cout << "-------------------------" << endl
+         << endl
+         << endl
+         << endl;
+    for (int i = 0; i < 4; i++)
+    {
+        diskManager.deleteFile("File" + to_string(i * 2));
+        diskManager.displayMemory();
+        diskManager.calculateFragmentation();
+    }
 
-bool DiskManager::copyFile(const string source, const string destination)
-{
-    return commands.copyFile(source, destination);
-}
+    string fileName = "File" + to_string(10);
+    int fileSize = 2; // Random file size between 1 and 100 units
+    bool created = diskManager.createFile(fileName, fileSize);
 
-bool DiskManager::moveFile(const string source, const string destination)
-{
-    return commands.moveFile(source, destination);
+    if (created)
+    {
+        cout << "Created " << fileName << " with size " << fileSize << " units." << endl;
+    }
+    else
+    {
+        cout << "Failed to create " << fileName << " with size " << fileSize << " units." << endl;
+    }
+
+    // Implement other file operations (e.g., deletion, moving) here
+
+    // Update the display
+    diskManager.displayMemory();
+
+    // Calculate and print external fragmentation, disk wastage, etc.
+    diskManager.calculateFragmentation();
+
+    return 0;
 }

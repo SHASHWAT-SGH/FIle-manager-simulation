@@ -4,6 +4,21 @@ Commands::Commands(/* args */)
 {
 }
 
+string Commands::getRootDir()
+{
+    return rootDir;
+}
+
+string Commands::getCurrentDir()
+{
+    return currentDir;
+}
+
+string Commands::setCurrentDir(string newDir)
+{
+    currentDir = newDir;
+}
+
 bool Commands::createDirectory(const string directoryName)
 {
 
@@ -38,7 +53,7 @@ bool Commands::createFile(const string fileName, string size)
 
 bool Commands::copyFile(const string src, const string dest)
 {
-    string command = "copy " + rootDir + src + " " + rootDir + dest;
+    string command = "copy " + currentDir + src + " " + currentDir + dest;
     int result = system(command.c_str());
     if (result == 0)
     {
@@ -52,7 +67,7 @@ bool Commands::copyFile(const string src, const string dest)
 
 bool Commands::moveFile(const string src, const string dest)
 {
-    string command = "move " + rootDir + src + " " + rootDir + dest;
+    string command = "move " + currentDir + src + " " + currentDir + dest;
     int result = system(command.c_str());
     if (result == 0)
     {
@@ -95,6 +110,6 @@ bool Commands::deleteDir(const string dirName)
 
 void Commands::printDirStruct(const string dirName)
 {
-    string command = "tree " + rootDir + dirName + " /f";
+    string command = "tree " + currentDir + dirName + " /f";
     system(command.c_str());
 }
