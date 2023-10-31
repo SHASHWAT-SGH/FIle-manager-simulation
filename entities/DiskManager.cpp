@@ -23,7 +23,6 @@ DiskManager::DiskManager(int diskSize)
     it returns true if creation is successfull
     else it returns false and prints the error message.
 */
-
 bool DiskManager::createDirectory(const string dirName)
 {
     if (commands.createDirectory(dirName))
@@ -42,7 +41,6 @@ bool DiskManager::createDirectory(const string dirName)
     it returns true if creation is successfull
     else it returns false and prints the error message.
 */
-
 bool DiskManager::createFile(const string fileName, int fileSize)
 {
     // create file
@@ -98,7 +96,12 @@ bool DiskManager::createFile(const string fileName, int fileSize)
 
 bool DiskManager::deleteFile(const string fileName)
 {
-    // Step 1: Find and mark the block to be deleted.
+    if (!commands.deleteFile(fileName))
+    {
+        return false;
+    }
+
+    // Find and mark the block to be deleted.
     for (int i = 0; i < memoryBlocks.size(); i++)
     {
         if (memoryBlocks[i].fileName == fileName)
@@ -108,7 +111,7 @@ bool DiskManager::deleteFile(const string fileName)
         }
     }
 
-    // Step 2: Merge adjacent free blocks (optional but can help reduce fragmentation).
+    //  Merge adjacent free blocks (optional but can help reduce fragmentation).
     for (int i = 0; i < memoryBlocks.size(); i++)
     {
         if (memoryBlocks[i].fileName.empty())
@@ -129,7 +132,10 @@ bool DiskManager::deleteFile(const string fileName)
 
 void DiskManager::displayMemory()
 {
-    // Block 5: File: File5, Size: 25 units
+    // Block 5: File: File5, Size: 25 bytes
+    cout << endl
+         << endl
+         << "----------------------------------" << endl;
     cout << "Memory Blocks:" << endl;
 
     for (int i = 0; i < memoryBlocks.size(); i++)
@@ -137,15 +143,17 @@ void DiskManager::displayMemory()
         cout << "Block " << i << ": ";
         if (memoryBlocks[i].fileName.empty())
         {
-            cout << "Free Space, Size: " << memoryBlocks[i].size << " units" << endl;
+            cout << "Free Space, Size: " << memoryBlocks[i].size << " bytes" << endl;
         }
         else
         {
-            cout << "File: " << memoryBlocks[i].fileName << ", Size: " << memoryBlocks[i].size << " units" << endl;
+            cout << "File: " << memoryBlocks[i].fileName << ", Size: " << memoryBlocks[i].size << " bytes" << endl;
         }
     }
 
-    cout << "----------------------------------" << endl;
+    cout << endl
+         << "----------------------------------" << endl
+         << endl;
 }
 
 void DiskManager::calculateFragmentation()
@@ -153,7 +161,10 @@ void DiskManager::calculateFragmentation()
     int totalFreeSpace = 0;
     int totalWastedSpace = 0;
     int numWastedBlocks = 0;
-
+    cout << endl
+         << endl
+         << "----------------------------------" << endl;
+    cout << "Memory Blocks:" << endl;
     // Calculate external fragmentation and disk wastage
     for (int i = 0; i < memoryBlocks.size(); i++)
     {
@@ -165,12 +176,18 @@ void DiskManager::calculateFragmentation()
         {
             numWastedBlocks++;
             totalWastedSpace += memoryBlocks[i - 1].size;
+            cout << "Block" << i - 1 << " Wasted memory: " << memoryBlocks[i - 1].size << "bytes" << endl;
         }
     }
 
     // Print or log the fragmentation and wastage values
-    cout << "Total Free Space: " << totalFreeSpace << " units" << endl;
-    cout << "Disk Wastage: " << totalWastedSpace << " units in " << numWastedBlocks << " blocks" << endl;
+
+    cout << endl;
+    cout << "Total Free Space: " << totalFreeSpace << " bytes" << endl;
+    cout << "Disk Wastage: " << totalWastedSpace << " bytes in " << numWastedBlocks << " blocks";
+    cout << endl
+         << "----------------------------------" << endl
+         << endl;
 }
 
 /*
@@ -216,4 +233,23 @@ bool DiskManager::copyFile(const string source, const string destination)
 bool DiskManager::moveFile(const string source, const string destination)
 {
     return commands.moveFile(source, destination);
+}
+
+int DiskManager::getAvailableMemory()
+{
+    int totalFreeSpace = 0;
+
+    for (int i = 0; i < memoryBlocks.size(); i++)
+    {
+        if (memoryBlocks[i].fileName.empty())
+        {
+            totalFreeSpace += memoryBlocks[i].size;
+        }
+    }
+    return totalFreeSpace;
+}
+
+string DiskManager::getCurrentDir()
+{
+    return commands.getCurrentDir();
 }

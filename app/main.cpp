@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
     int choice;
-    DiskManager diskManager(1000);
+    DiskManager diskManager(10000);
     while (true)
     {
         cout << endl
@@ -20,19 +20,19 @@ int main()
              << endl;
         cout << "\t\t\tWelcome To File Manager" << endl
              << endl;
-        cout << "1. Create directory" << endl; // done
-        cout << "2. Create file" << endl;      // done
-        cout << "3. Delete file" << endl;
-        cout << "4. Rename file" << endl;                // done
-        cout << "5. Show contents of directory" << endl; // done
-        cout << "6. Delete complete directory" << endl;
-        cout << "7. Copy file" << endl; // done
-        cout << "8. Move file" << endl; // done
-        cout << "9. Display memory details" << endl;
-        cout << "10. Show fragmentation" << endl;
-        cout << "11. Show available memory" << endl;
-        cout << "12. Show Disk Wastage" << endl;
-        cout << "13. Change directory" << endl;
+        cout << "1. Create directory" << endl;                     // done
+        cout << "2. Create file" << endl;                          // done
+        cout << "3. Delete file" << endl;                          // done
+        cout << "4. Rename file" << endl;                          // done
+        cout << "5. Show contents of directory" << endl;           // done
+        cout << "6. Show present directory" << endl;               // done
+        cout << "7. Copy file" << endl;                            // done
+        cout << "8. Move file" << endl;                            // done
+        cout << "9. Display memory details" << endl;               // done
+        cout << "10. Show fragmentation and disk wastage" << endl; // done
+        cout << "11. Show available memory" << endl;               // done
+        cout << "12. Change directory" << endl;
+        cout << "13. Exit" << endl;
         cout << ">>> ";
 
         // take user input
@@ -64,8 +64,27 @@ int main()
             cin >> intInput;
             cout << endl;
             diskManager.createFile(stringInput, intInput);
+            // if (diskManager.createFile(stringInput, intInput))
+            // {
+            //     cout << "success";
+            // }
+            // else
+            // {
+            //     cout << "failed";
+            // }
             break;
         case 3:
+            // Delete file
+            cout << "Enter file name: ";
+            cin >> stringInput;
+            if (diskManager.deleteFile(stringInput))
+            {
+                cout << "Successfully deleted file." << endl;
+            }
+            else
+            {
+                cout << "Unable to delete file." << endl;
+            }
             break;
         case 4:
             // Rename file
@@ -85,12 +104,14 @@ int main()
             break;
         case 5:
             // Show contents of directory
-            cout << "Enter file name: ";
+            cout << "Enter directory name: ";
             cin >> stringInput;
             cout << endl;
             diskManager.showDirContent(stringInput);
             break;
         case 6:
+            // Show present directory
+            cout << "current working directory: " << diskManager.getCurrentDir() << endl;
             break;
         case 7:
             // Copy file
@@ -125,18 +146,23 @@ int main()
             }
             break;
         case 9:
+            // Display memory details
+            diskManager.displayMemory();
             break;
         case 10:
+            // Show fragmentation
+            diskManager.calculateFragmentation();
             break;
         case 11:
+            // Show available memory
+            intInput = diskManager.getAvailableMemory();
+            cout << "Available memory: " << intInput << " bytes" << endl;
             break;
         case 12:
             break;
         case 13:
-            // Change directory
-
-            break;
-
+            // exit
+            exit(1);
         default:
             exit(1);
         }

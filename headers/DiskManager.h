@@ -29,6 +29,8 @@ public:
     void showDirContent(const string dirPath);
     bool copyFile(const string source, const string destination);
     bool moveFile(const string source, const string destination);
+    int getAvailableMemory();
+    string getCurrentDir();
 };
 
 #endif
