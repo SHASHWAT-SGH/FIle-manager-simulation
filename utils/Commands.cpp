@@ -1,24 +1,4 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
-
-class Commands
-{
-private:
-    /* data */
-public:
-    string rootDir = ".\\root\\";
-    string currentDir = ".\\root\\";
-    Commands(/* args */);
-    bool createDirectory(const string directoryName);
-    bool createFile(const string fileName, const string size);
-    bool copyFile(const string src, const string dest);
-    bool moveFile(const string src, const string dest);
-    bool deleteFile(const string fileName);
-    bool deleteDir(const string dirName);
-    void printDirStruct(const string dirName);
-};
+#include "../headers/Commands.h"
 
 Commands::Commands(/* args */)
 {
@@ -117,67 +97,4 @@ void Commands::printDirStruct(const string dirName)
 {
     string command = "tree " + rootDir + dirName + " /f";
     system(command.c_str());
-}
-
-int main()
-{
-    Commands commands;
-
-    // if (commands.createDirectory("test"))
-    // {
-    //     cout << "Created directory" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Unable to create directory" << endl;
-    // }
-
-    // if (commands.createFile("testfile1.txt", "10000"))
-    // {
-    //     cout << "Created file" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Unable to create file" << endl;
-    // }
-
-    // if (commands.copyFile("testfile1.txt", "\\dir1\\testfile2.txt"))
-    // {
-    //     cout << "Copied file" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Unable to copy file" << endl;
-    // }
-
-    // if (commands.moveFile("testfile2.txt", "dir1\\testfile3.txt"))
-    // {
-    //     cout << "Moved file" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Unable to move file" << endl;
-    // }
-
-    // if (commands.deleteFile("dir1\\testfile3.txt"))
-    // {
-    //     cout << "Deleted file" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Unable to delete file" << endl;
-    // }
-
-    // if (commands.deleteFile("dir1"))
-    // {
-    //     cout << "Deleted directory" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Unable to delete directory" << endl;
-    // }
-
-    commands.printDirStruct("");
-
-    return 0;
 }

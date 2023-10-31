@@ -1,9 +1,11 @@
 #include <iostream>
+#include "../headers/Commands.h"
 
 using namespace std;
 
 int main()
 {
-    system("dir");
+    Commands commands;
+    commands.createFile("test.txt", "1000");
     return 0;
 }
